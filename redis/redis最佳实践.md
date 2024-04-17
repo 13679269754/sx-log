@@ -42,8 +42,8 @@ len相关命令来，估算key大小，例如 strlen , llen (**建议使用**)
 #### **bigkey发现**
 * `redis-cli --bigkeys` 需要扫描全部的key,但是只返回每一种最大类型的最大key。 **慎用**
 * scan扫描 ，与key * 不同，scan 通过游标的方式来遍历所有的key,不会导致阻塞
-* 第三方工具：如redis_rdb_tools 分析rdb文件
   ![redis_scan](image-10.png)
+* 第三方工具：如redis_rdb_tools 分析rdb文件
 * 网络监控
 
 #### **如何处理bigkey**
@@ -62,7 +62,7 @@ len相关命令来，估算key大小，例如 strlen , llen (**建议使用**)
 2. hash ziplist 存在的问题
 ![hash-max-ziplist-entrys](image-12.png)
 
-如何处理可以见一个大的hash集合，根据规则拆分为多个小的hash集合
+如何处理可以见一个大的hash集合，根据规则拆分为多个小的hash集合  
 ![合适key类型规则建议](image-13.png)
 
 ## redis批处理(java端的命令执行方式)
@@ -71,7 +71,7 @@ redis 批处理的必要性<br>
 注意不要一次性传输太多命令，否则一次命令占用带宽太大，导致网络阻塞。
 
 ### mset等redis 自带的命令与pipeline 的区别
-mset redis 自带的命令 使用时有一定的局限性，要求写入的类型的是一致的，在redis 中是在同一条命令中执行；
+mset redis 自带的命令 使用时有一定的局限性，要求写入的类型的是一致的，在redis 中是在同一条命令中执行；  
 pipeline 不是，所以pipeline相对更加灵活
 
 ### 集群环境下对批处理命令的限制
@@ -94,14 +94,14 @@ pipeline 不是，所以pipeline相对更加灵活
 3. 不要与cpu,io压力大的服务部署在一起，例如数据库，消息队列
 
 ### 慢查询
-slowlog-log-slower-than：慢查询阈值，单位微妙，建议1000
+slowlog-log-slower-than：慢查询阈值，单位微妙，建议1000 即 1 毫秒  
 
-slowlog len 获取长度
-slowlog GET [n] n 条数
-slowlog reset 清空
+slowlog len 获取长度  
+slowlog GET [n] n 条数  
+slowlog reset 清空  
 
 ### redis 安全要求
-1. 密码必须设置，复合常见的密码安全要求
+1. 密码必须设置，复合常见的密码安全要求  
 2. rename-command flushdb cleandb<br>
 rename-command flushall cleanall<br>
 rename-command debug nobug<br>
@@ -127,7 +127,7 @@ rename-command config set  noconfig set
 * 复制缓冲区<br>
   repl_backlog_buf 设置，如果频繁的出现从库重新全量同步，可以适当调大该值，默认1mb
 * AOF缓冲区<br>
-  AOF 刷盘前的缓冲区，也会保存AOF在rewrite时的AOF日至，无法设置容量上限
+  AOF 刷盘前的缓冲区，也会保存AOF在rewrite时的AOF日志，无法设置容量上限
 
 * 客户端缓冲区<br>
   分为输入缓冲区，输出缓冲区<br>

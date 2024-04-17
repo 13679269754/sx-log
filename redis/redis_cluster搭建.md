@@ -136,12 +136,11 @@ redis-cli --cluster create --cluster-replicas 1 172.29.29.101:6000 172.29.29.101
 
 
 ## 可能出现的问题记录
-**1. bind 问题**
+**1. bind 问题**  
 bind 参数默认为127.0.0.1. 即不允许远程访问
 
-**2. Sending CLUSTER MEET messages to join the cluster Waiting for the cluster to join .................................**
+**2. Sending CLUSTER MEET messages to join the cluster Waiting for the cluster to join .................................**  
 可能是仅仅开放了redis 的访问端口，没有开放集群总线端口，集群总线端口为 port + 10000
 
-**3.Sorry, the cluster configuration file nodes.conf is already used by a different Redis Cluster node.
-**
+**3.Sorry, the cluster configuration file nodes.conf is already used by a different Redis Cluster node.**  
 多个redis 使用了同一个cluster-config-file，不同的redis要使用不同的文件路径

@@ -18,9 +18,9 @@
 
 ## 2.redis数据持久化
 ***RDB 持久化***<br>
-save 与 bgsave
-save 前台rdb ,会在主动关闭redis的时候自动执行
-bgsave 后台rdb
+save 与 bgsave  
+save 前台rdb ,会在主动关闭redis的时候自动执行  
+bgsave 后台rdb  
 
 相关配置
 ```bash
@@ -37,9 +37,9 @@ dir ""
 appendonly yes
 appendfilename ""
 
-appendfsync always #每有写命令，即触发sync
-appendfsync everyesc #写命令先放aof缓冲区，每秒刷新到磁盘文件
-appendfsync no  #写命令先放aof缓冲区，等待操作系统决定合适写入磁盘
+appendfsync always # 每有写命令，即触发sync
+appendfsync everyesc # 写命令先放aof缓冲区，每秒刷新到磁盘文件
+appendfsync no  # 写命令先放aof缓冲区，等待操作系统决定合适写入磁盘
 ```
 
 AOF 重写<br>
@@ -47,7 +47,7 @@ bgrewriteaof
 AOF触发重写的配置<br> 
 ```bash
 auto-aof-rewrite-percentage 100  # 比上次文件增加超过多少百分比触发重写<br> 
-auto-aof-rewrite-min-size 64mb #文件大小大于多少触发重写
+auto-aof-rewrite-min-size 64mb # 文件大小大于多少触发重写
 ```
 
 ### RDB 原理
@@ -65,7 +65,7 @@ copy_on_write
 2. **代价相对较大**：fork ,压缩，写大量磁盘文件花费都很大
 
 ### AOF原理
-将所有的redis写操作记录到aof文件中，关键词**追加**，**写操作**。为了避免文件过大，和执行无用的记录，秩序记录最后一条对key的写命令即可，所以后了rewrite操作。
+将所有的redis写操作记录到aof文件中，关键词**追加**，**写操作**。为了避免文件过大，和执行无用的记录，秩序记录最后一条对key的写命令即可，所以有了rewrite操作。
 
 
 ## 3.主从同步
