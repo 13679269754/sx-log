@@ -3,7 +3,7 @@
 | shenx | 2024-4月-16 | 2024-4月-16  |
 | ... | ... | ... |
 ---
-# python进阶教程--协程
+# python进阶教程--协程(迭代器与生成器)
 
 [toc]
 
@@ -13,16 +13,18 @@
 
 python对象中，只要定义了可以返回一个迭代器的__iter__方法，或者定义了可以支持下标索引的__getitem__方法，name他就是一个**可迭代对象**，通俗的讲就是可以通过for循环进行遍历了。
 
-tips :
-dir([object]) 可以打印列表中的所有实现的方法
-isinstance() 判断对象类型 
-isinstance([],Iterable)  判断是否是可迭代对象
-hasattr([],'__getitem__')  判断是否是可迭代对象
-type(counter)  获取对象的类型
+tips :  
+dir([object]) 可以打印列表中的所有实现的方法  
+isinstance() 判断对象类型  
+isinstance([],Iterable)  判断是否是可迭代对象  
+hasattr([],'__getitem__')  判断是否是可迭代对象  
+type(counter)  获取对象的类型  
 
-判断是否是可迭代对象
-可以使用 isinstance + iterable
-         hasattr + __getitem_
+判断是否是可迭代对象  
+可以使用  
+isinstance + iterable  
+hasattr + \_\_getitem\_\_  
+
 创建一个可迭代对象  
 ```python
 class Employee:
@@ -40,12 +42,12 @@ if __name__ == "__main__":
         print(i)
 ```
 
-### 迭代器
-实现了__next__ 和 __iter__ 方法(缺一不可)的对象就是**迭代器**。其中__iter__ 方法返回迭代器自身，  
+### 迭代器  
+实现了__next__ 和__iter__ 方法(缺一不可)的对象就是**迭代器**。其中__iter__ 方法返回迭代器自身，  
 __next__方法不断返回迭代器中的下一个值，直到容器中没有更多元素时抛出StopIteration异常，以终止迭代。  
 
 **为什么有了可迭代对象，还要有迭代器?**
-* 工厂模式，节约内存
+* 工厂模式，节约内存  
     迭代器没有len 属性
 
 **常用的一个迭代器itertools.count**
@@ -53,7 +55,7 @@ __next__方法不断返回迭代器中的下一个值，直到容器中没有更
 from itertools import count
 from collections import Iterator
 counter = count(start=10)
-print(isinstance(counter,Iterator))  判断一个对象是否是可迭代对象
+print(isinstance(counter,Iterator))  # 判断一个对象是否是可迭代对象
 ```
 
 **将可迭代对象变成迭代器对象**  
@@ -127,20 +129,20 @@ if __name__ == "__main__":
     ```
 
 
-3. 生成器的创建于使用
+3. 生成器的创建与使用
 
 生成器的执行过程
 
    ```python
-   def ccountdown(n):
-    print('conting down from ',n)
-    while n>= 0:
-        newvalue = yield n
-        if newvalue is not None:
-            n = newvalue
-        else:
-            n -= 1
-    print('done')
+    def ccountdown(n):
+        print('conting down from ',n)
+        while n>= 0:
+            newvalue = yield n
+            if newvalue is not None:
+                n = newvalue
+            else:
+                n -= 1
+        print('done')
 
 
     if __name__ == "__main__":
@@ -168,16 +170,52 @@ print(next(b))
 
 
 ### 协程
-yield 关键字的两个作用： 
-一. 每次遇到yield 关键字后放回相应结果。
-二. 保留当前函数的运行状态，等待下一次调用，下一次调用时继续执行之后的语句。
+yield 关键字的两个作用：   
+一. 每次遇到yield 关键字后放回相应结果。  
+二. 保留当前函数的运行状态，等待下一次调用，下一次调用时继续执行之后的语句。  
 
-这以为意味着程序的控制权的转移是临时的，我们的函数还会收回来控制权。这也是yield 和 return 最大的区别。
+这以为意味着程序的控制权的转移是临时的，我们的函数还会收回来控制权。这也是yield 和 return 最大的区别。  
 
-协程定义：
-协程又被称为微线程，是一种用户态的轻量级线程。在同一个线程中,不同的子程序可以中断去执行其他的子程序，并且中断回来后,从中断处继续执行。
+协程定义：  
+协程又被称为微线程，是一种用户态的轻量级线程。在同一个线程中,不同的子程序可以中断去执行其他的子程序，并且中断回来后,从中断处继续执行。  
 
-协程拥有自己的寄存器上下文和栈。
+协程拥有自己的寄存器上下文和栈。  
 
 **使用协程实现消费者-生产者模式**
-def consumer()
+```python 
+def consumer():
+    r = 'hello'
+    while True:
+        n = yield r
+        if not n:
+            return
+        print('[CONSUMER] Consuming %s...' % n)
+        r = '200 OK'
+
+
+def producer(c):  # 传入一个生成器
+    c.send(None)
+    n = 0
+    while n < 5:
+        n = n + 1
+        print('[PRODUCER] Producing %s...' % n)
+        r = c.send(n)
+        print('[PRODUCER] Consumer return: %s' % r)
+    c.close()
+
+
+if __name__ == "__main__":
+    c = consumer()
+    producer(c)
+```
+
+#### 协程的演进(协程章节总结)
+可迭代对象
+
+迭代器
+
+生成器
+
+协程
+
+asyncio 框架

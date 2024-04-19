@@ -129,7 +129,7 @@ if __name__=='__main__':
     t1.start()
 ```
 
-## 消息隔离
+## 消息隔离local
 
 local_data= thread.local()
 

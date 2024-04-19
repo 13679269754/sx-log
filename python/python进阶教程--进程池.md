@@ -11,8 +11,6 @@
 ## 使用pool 类来实现进程池
 
 
-
-
 ## 使用concurrent_futures模块提供的 ProcessPoolExecutor 来实现进程池
 
 与线程池threadPoolExecutor 类似。[线程池](python进阶教程--线程高级应用.md) (**推荐使用**)
